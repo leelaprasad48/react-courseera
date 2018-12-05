@@ -6,18 +6,23 @@ class DishdetailComponent extends Component {
         super(props);
     }
 
-    render() {
-        const commentsList = this.props.selectedDish.comments.map((comment) => {
+    renderComments(selectedDish) {
+        return selectedDish.comments.map((comment) => {
             const time = new Date(comment.date);
             const commentedTime = time.toDateString().substring(4,10) + ", " + time.getFullYear();
-            console.log(commentedTime);
             return (
-                <div key={this.props.selectedDish.comments.id}>
-                <p>{comment.comment}</p>
-                <p> -- {comment.author} , {commentedTime}</p>
+                <div key={selectedDish.comments.id}>
+                    <ul className="list-unstyled">
+                        <li>{comment.comment}</li>
+                        <li> -- {comment.author} , {commentedTime}</li>
+                    </ul>
                 </div>
             );
         });
+    }
+
+    render() {
+
         return (
             <>
                 <div key={this.props.selectedDish.id} className="col-12 col-md-5 m-1">
@@ -31,10 +36,9 @@ class DishdetailComponent extends Component {
                 </div>
                 <div className="col-12 col-md-5 m-1">
                     <h2>Comments</h2>
-                    {commentsList}
+                    {this.renderComments(this.props.selectedDish)}
                 </div>
             </>
-
         );
     }
 }
