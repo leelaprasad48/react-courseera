@@ -6,6 +6,7 @@ import {
 import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from "./LoadingComponent";
 import {Link} from 'react-router-dom';
+import {baseUrl} from "../shared/baseUrl";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -16,7 +17,7 @@ function RenderDish({dish}) {
         return (
             <div className="col-12 col-md-5 m-1">
                 <Card key={dish.id}>
-                    <CardImg width="100%" src={dish.image}
+                    <CardImg width="100%" src={baseUrl + dish.image}
                              alt={dish.name}/>
                     <CardBody>
                         <CardTitle>{dish.name}</CardTitle>
@@ -49,7 +50,7 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -120,7 +121,7 @@ class CommentForm extends Component {
     }
 }
 
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
     if (comments !== null) {
         return (
             <div className="col-12 col-md-5 m-1">
@@ -139,7 +140,7 @@ function RenderComments({comments, addComment, dishId}) {
                 })}
                 <CommentForm
                     dishId={dishId}
-                    addComment={addComment}
+                    postComment={postComment}
                 />
             </div>
         );
@@ -188,7 +189,7 @@ const DishDetail = (props) => {
                     <RenderDish dish={props.dish}/>
                     <RenderComments
                         comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}
                     />
                 </div>
